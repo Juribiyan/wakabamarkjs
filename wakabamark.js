@@ -34,8 +34,7 @@ var wm_tags = [
 	[['[u]','[/u]'],	['<span style="text-decoration: underline">','</span>']],
 	[['[s]','[/s]'],	['<strike>','</strike>']],
 	[['%%','%%'],		['<span class="spoiler">','</span>']],
-	[['[aa]','[/aa]'],	['<span style="font-family: Mona,\'MS PGothic\' !important;">','</span>']],
-	[['**','**'],		['<b>','</b>']],
+	[['[aa]','[/aa]'],	['<span style="font-family: Mona,\'MS PGothic\' !important;">','</span>']]
 ];
 
 
