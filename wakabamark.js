@@ -1,7 +1,5 @@
-// WAKABAMARK.JS
-
 var WM = function() {
-    this.tags = [];
+	this.tags = [];
 	this.newTag = function(pattern, replace) {
 		for (var i = 0; i <= 1; i++) {
 			pattern[i] = pattern[i].replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, "\\$&");
@@ -17,11 +15,20 @@ var WM = function() {
 		};
 		return str;
 	}
+	this.registerTags = function(tags) {
+		var tag = [];
+		for (var i = tags.length - 1; i >= 0; i--) {
+			tag = tags[i];
+			this.newTag(tag[0], tag[1]);
+		};
+	}
 }
 
 var wm_tags = [
 	[['**','**'],		['<b>','</b>']],
+	[['__','__'],		['<b>','</b>']],
 	[['*','*'],		['<i>','</i>']],
+	[['_','_'],		['<i>','</i>']],
 	[['[b]','[/b]'],	['<b>','</b>']],
 	[['[i]','[/i]'],	['<i>','</i>']],
 	[['[u]','[/u]'],	['<span style="text-decoration: underline">','</span>']],
@@ -31,10 +38,7 @@ var wm_tags = [
 	[['**','**'],		['<b>','</b>']],
 ];
 
+
 var wm = new WM();
 
-var tag = [];
-for (var i = wm_tags.length - 1; i >= 0; i--) {
-	tag = wm_tags[i];
-	wm.newTag(tag[0], tag[1]);
-};
+wm.registerTags(wm_tags);
