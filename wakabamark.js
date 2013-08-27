@@ -4,7 +4,6 @@ var WM = function() {
     this.options = {
         makeLinks: true,
         negation: true,
-        escapeHTML: true,
         greenquoting: true
     }
     
