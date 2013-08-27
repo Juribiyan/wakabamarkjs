@@ -1,34 +1,101 @@
 var WM = function() {
-	this.tags = [];
+    this.tags = [];
+    
+    this.options = {
+        makeLinks: true,
+        negation: true,
+        escapeHTML: true
+    }
+    
+    this.clinks = {
+        exp: /(([a-z]+:\/\/)?(([a-z0-9\-]+\.)+([a-z]{2}|aero|arpa|biz|com|coop|edu|gov|info|int|jobs|mil|museum|name|nato|net|org|pro|travel|local|internal))(:[0-9]{1,5})?(\/[a-z0-9_\-\.~]+)*(\/([a-z0-9_\-\.]*)(\?[a-z0-9+_\-\.%=&amp;]*)?)?(#[a-zA-Z0-9!$&'()*+.=-_~:@/?]*)?)(\s+|$)/gi,
+        rep: "<a href='$1'>$1</a>"
+    }
+    
+    this.escapechars = [
+        [/\'/g, '&#039;'],
+        [/\"/g, '&quot;'],
+        [/</g, '&lt;'], 
+        [/\>/g, '&gt;'],
+        [/\&/g, '&amp;'],
+    ];
+    
+    this.negationtags = [
+        ['`','`'],
+        ['[code]','[/code]'],  
+    ];
+    
 	this.newTag = function(pattern, replace) {
 		for (var i = 0; i <= 1; i++) {
 			pattern[i] = pattern[i].replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, "\\$&");
-		};
+		}
 		var exp = new RegExp(pattern[0]+'([\\s\\S]+?)'+pattern[1], "mg");
-		this.tags.push({exp: exp, rep: replace[0]+"$1"+replace[1]});
+        return {exp: exp, rep: replace[0]+"$1"+replace[1]};
+	};
+	
+	this.addTag = function (pattern, replace) {
+	    this.tags.push(this.newTag(pattern, replace));
 	}
+	
+	this.negate = function(match, p1, offset, s) {
+	    var tagescapechars = [
+            [/\*/mg, '&#42;'],
+            [/_/, '&#95;'],
+            [/\[/mg, '&#91;'], [/\]/mg, '&#93;'],
+            [/%/mg, '&#37;']
+        ];
+        for (var j = tagescapechars.length - 1; j >= 0; j--) {
+            p1 = p1.replace(tagescapechars[j][0], tagescapechars[j][1]);
+        }
+        return p1;
+    }
+	
 	this.apply = function(str) {
 		var tag = {};
-		for (var i = this.tags.length - 1; i >= 0; i--) {
+		
+		if(this.options.escapeHTML) {
+		    for (var i = this.escapechars.length - 1; i >= 0; i--) {
+    			str = str.replace(this.escapechars[i][0], this.escapechars[i][1]);
+    		}
+		}
+		
+		if(this.options.negation) {
+		    for (i = this.negationtags.length - 1; i >= 0; i--) {
+    			tag = this.newTag(this.negationtags[i], ["",""]).exp;
+    			str = str.replace(tag, this.negate);
+    		}
+		}
+		
+		for (i = this.tags.length - 1; i >= 0; i--) {
 			tag = this.tags[i];
 			str = str.replace(tag.exp, tag.rep);
-		};
+		}
+		
+		if(this.options.makeLinks) {
+		    str = str.replace(this.clinks.exp, this.clinks.rep);
+		}
+		
 		return str;
-	}
-	this.registerTags = function(tags) {
+	};
+	
+	this.registerTags = function(tags, destination) {
 		var tag = [];
 		for (var i = tags.length - 1; i >= 0; i--) {
 			tag = tags[i];
-			this.newTag(tag[0], tag[1]);
-		};
-	}
-}
+			this.tags.push(this.newTag(tag[0], tag[1]));
+		}
+	};
+};
+
 
 var wm_tags = [
 	[['**','**'],		['<b>','</b>']],
 	[['__','__'],		['<b>','</b>']],
-	[['*','*'],		['<i>','</i>']],
-	[['_','_'],		['<i>','</i>']],
+	[['*','*'],		    ['<i>','</i>']],
+	[['_','_'],		    ['<i>','</i>']],
+];
+
+var ku_tags = [
 	[['[b]','[/b]'],	['<b>','</b>']],
 	[['[i]','[/i]'],	['<i>','</i>']],
 	[['[u]','[/u]'],	['<span style="text-decoration: underline">','</span>']],
@@ -41,3 +108,4 @@ var wm_tags = [
 var wm = new WM();
 
 wm.registerTags(wm_tags);
+wm.registerTags(ku_tags);
