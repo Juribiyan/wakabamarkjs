@@ -4,7 +4,8 @@ var WM = function() {
     this.options = {
         makeLinks: true,
         negation: true,
-        escapeHTML: true
+        escapeHTML: true,
+        greenquoting: true
     }
     
     this.clinks = {
@@ -15,8 +16,7 @@ var WM = function() {
     this.escapechars = [
         [/\'/g, '&#039;'],
         [/\"/g, '&quot;'],
-        [/</g, '&lt;'], 
-        [/\>/g, '&gt;'],
+        [/</g, '&lt;'], [/\>/g, '&gt;'],
         [/\&/g, '&amp;'],
     ];
     
@@ -37,44 +37,48 @@ var WM = function() {
 	    this.tags.push(this.newTag(pattern, replace));
 	}
 	
-	this.negate = function(match, p1, offset, s) {
-	    var tagescapechars = [
-            [/\*/mg, '&#42;'],
-            [/_/, '&#95;'],
-            [/\[/mg, '&#91;'], [/\]/mg, '&#93;'],
-            [/%/mg, '&#37;']
-        ];
-        for (var j = tagescapechars.length - 1; j >= 0; j--) {
-            p1 = p1.replace(tagescapechars[j][0], tagescapechars[j][1]);
-        }
-        return p1;
-    }
-	
 	this.apply = function(str) {
 		var tag = {};
 		
+		if(this.options.negation) {
+		    for (var i = this.negationtags.length - 1; i >= 0; i--) {
+    			tag = this.newTag(this.negationtags[i], ["",""]).exp;
+    			str = str.replace(tag, function(match, p1, offset, s) {
+            	    var tagescapechars = [
+                        [/\*/mg, '&#42;'],
+                        [/_/, '&#95;'],
+                        [/\[/mg, '&#91;'], [/\]/mg, '&#93;'],
+                        [/%/mg, '&#37;']
+                    ];
+                    for (var j = tagescapechars.length - 1; j >= 0; j--) {
+                        p1 = p1.replace(tagescapechars[j][0], tagescapechars[j][1]);
+                    }
+                    return p1;
+                });
+    		}
+		}
+		
 		if(this.options.escapeHTML) {
-		    for (var i = this.escapechars.length - 1; i >= 0; i--) {
+		    for (i = this.escapechars.length - 1; i >= 0; i--) {
     			str = str.replace(this.escapechars[i][0], this.escapechars[i][1]);
     		}
-		}
-		
-		if(this.options.negation) {
-		    for (i = this.negationtags.length - 1; i >= 0; i--) {
-    			tag = this.newTag(this.negationtags[i], ["",""]).exp;
-    			str = str.replace(tag, this.negate);
-    		}
-		}
-		
-		for (i = this.tags.length - 1; i >= 0; i--) {
-			tag = this.tags[i];
-			str = str.replace(tag.exp, tag.rep);
 		}
 		
 		if(this.options.makeLinks) {
 		    str = str.replace(this.clinks.exp, this.clinks.rep);
 		}
 		
+		if(this.options.greenquoting) {
+		    str = str.replace(
+		        /(?:>|\&gt;)([^\r\n]+)(?:(?:\r|\n)?)/mg, 
+		        "<span class=\"unkfunc\">\&gt;$1</span>"
+		    );
+		}
+		
+		for (i = this.tags.length - 1; i >= 0; i--) {
+			tag = this.tags[i];
+			str = str.replace(tag.exp, tag.rep);
+		}
 		return str;
 	};
 	
@@ -91,8 +95,8 @@ var WM = function() {
 var wm_tags = [
 	[['**','**'],		['<b>','</b>']],
 	[['__','__'],		['<b>','</b>']],
-	[['*','*'],		    ['<i>','</i>']],
-	[['_','_'],		    ['<i>','</i>']],
+	[['*','*'],		['<i>','</i>']],
+	[['_','_'],		['<i>','</i>']],
 ];
 
 var ku_tags = [
