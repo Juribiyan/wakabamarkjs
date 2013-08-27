@@ -8,7 +8,7 @@ var WM = function() {
     }
     
     this.clinks = {
-        exp: /(([a-z]+:\/\/)?(([a-z0-9\-]+\.)+([a-z]{2}|aero|arpa|biz|com|coop|edu|gov|info|int|jobs|mil|museum|name|nato|net|org|pro|travel|local|internal))(:[0-9]{1,5})?(\/[a-z0-9_\-\.~]+)*(\/([a-z0-9_\-\.]*)(\?[a-z0-9+_\-\.%=&amp;]*)?)?(#[a-zA-Z0-9!$&'()*+.=-_~:@/?]*)?)(\s+|$)/gi,
+        exp: /(([a-z]+:\/\/)?(([a-z0-9\-]+\.)+([a-z]{2}|aero|arpa|biz|com|coop|edu|gov|info|int|jobs|mil|museum|name|nato|net|org|pro|travel|local|internal))(:[0-9]{1,5})?(\/[a-z0-9_\-\.~]+)*(\/([a-z0-9_\-\.]*)(\?[a-z0-9+_\-\.%=&amp;]*)?)?(#[a-zA-Z0-9!$&'()*+.=-_~:@/?]*)?)(?=\s+|$)/gi,
         rep: "<a href='$1'>$1</a>"
     }
     
@@ -20,8 +20,8 @@ var WM = function() {
     ];
     
     this.negationtags = [
-        ['`','`'],
-        ['[code]','[/code]'],  
+        /`([\s\S]+?)`/gm,
+        /\[code\]([\s\S]+?)\[\/code\]/gm,  
     ];
     
 	this.newTag = function(pattern, replace) {
@@ -41,11 +41,10 @@ var WM = function() {
 		
 		if(this.options.negation) {
 		    for (var i = this.negationtags.length - 1; i >= 0; i--) {
-    			tag = this.newTag(this.negationtags[i], ["",""]).exp;
-    			str = str.replace(tag, function(match, p1, offset, s) {
+                str = str.replace(this.negationtags[i], function(match, p1, offset, s) {
             	    var tagescapechars = [
                         [/\*/mg, '&#42;'],
-                        [/_/, '&#95;'],
+                        [/_/mg, '&#95;'],
                         [/\[/mg, '&#91;'], [/\]/mg, '&#93;'],
                         [/%/mg, '&#37;'],
                         [/\>/g, '&#62;'],
@@ -81,7 +80,7 @@ var WM = function() {
 	};
 	
 	this.registerTags = function(tags, destination) {
-		var tag = [];
+		tag = [];
 		for (var i = tags.length - 1; i >= 0; i--) {
 			tag = tags[i];
 			this.tags.push(this.newTag(tag[0], tag[1]));
