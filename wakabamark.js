@@ -36,7 +36,7 @@ var WM = function() {
 
 	this.newTag = function(pattern, replace) {
 		for (var i = 0; i <= 1; i++) {
-			pattern[i] = this.escRX(pattern[i]);
+			pattern[i] = this.escRX(this.escHTML(pattern[i]));
 		}
 		var exp = new RegExp(pattern[0]+'([\\s\\S]+?)'+pattern[1], "mg");
         return {exp: exp, rep: replace[0]+"$1"+replace[1]};
@@ -140,8 +140,8 @@ function arr_iterate(array, callback) {
 var wm_tags = [
 	[['**','**'],		['<b>','</b>']],
 	[['__','__'],		['<b>','</b>']],
-	[['*','*'],		    ['<i>','</i>']],
-	[['_','_'],		    ['<i>','</i>']],
+	[['*','*'],		['<i>','</i>']],
+	[['_','_'],		['<i>','</i>']],
 ];
 
 var ku_tags = [
@@ -155,7 +155,7 @@ var ku_tags = [
 ];
 
 var bypass_tags = [
-    [['[code]','[/code]'],	['<pre class="code">','</pre>']],
+    [['[code]','[/code]'],  ['<pre class="code">','</pre>']],
     [['`','`'],	            ['<pre class="code">','</pre>']]
 ];
 
