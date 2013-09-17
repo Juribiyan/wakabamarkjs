@@ -7,7 +7,7 @@ var WM = function() {
         makeLinks: true,
         bypass: true,
         greenquoting: true,
-        makeEmbeds: true,
+        makeEmbeds: false,
         makeLists: true
     }
     
@@ -26,6 +26,8 @@ var WM = function() {
     this.escRX = function(exp) {
         return exp.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, "\\$&");
     }
+    
+    var picl = [];
     
     this.escHTML = function(string) {
         for (var i = this.escapechars.length - 1; i >= 0; i--) {
@@ -54,7 +56,7 @@ var WM = function() {
 		        tag = this.bypasstags[i];
                 str = str.replace(tag.exp, function(match, p1, offset, s) {
             	    var tagescapechars = [
-                        [/\*/mg, '&#42;'],
+                        [/\*/mg, '&#42;'], [/\#/mg, '&#35;'],
                         [/_/mg, '&#95;'],
                         [/\[/mg, '&#91;'], [/\]/mg, '&#93;'],
                         [/%/mg, '&#37;'],
@@ -103,6 +105,12 @@ var WM = function() {
 			str = str.replace(tag.exp, tag.rep);
 		}
 		
+		//rghost
+		if(this.options.gmakeEmbeds) {
+		    str = str.replace(/(?:\[\:)([0-9]+)(?:\:\])/mg, 
+		'<a class="rgh-link" data-nextpic="http://rghost.ru/$1/image.png" href="http://rghost.ru/$1.view"><img src="http://rghost.ru/$1/thumb.png"></img></a>');
+		}
+
 		//make links clickable
 		if(this.options.makeLinks) {
 		    str = str.replace(this.clinks.exp, this.clinks.rep);
@@ -140,8 +148,8 @@ function arr_iterate(array, callback) {
 var wm_tags = [
 	[['**','**'],		['<b>','</b>']],
 	[['__','__'],		['<b>','</b>']],
-	[['*','*'],		['<i>','</i>']],
-	[['_','_'],		['<i>','</i>']],
+	[['*','*'],		    ['<i>','</i>']],
+	[['_','_'],		    ['<i>','</i>']],
 ];
 
 var ku_tags = [
@@ -155,14 +163,14 @@ var ku_tags = [
 ];
 
 var bypass_tags = [
-    [['[code]','[/code]'],  ['<pre class="code">','</pre>']],
+    [['[code]','[/code]'],	['<pre class="code">','</pre>']],
     [['`','`'],	            ['<pre class="code">','</pre>']]
 ];
 
 var lists = [
     ["* ", ["<ul>","</ul>"]],
     ["# ", ["<ol>","</ol>"]]
-]
+];
 
 var wm = new WM();
 
