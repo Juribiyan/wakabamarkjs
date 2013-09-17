@@ -106,7 +106,7 @@ var WM = function() {
 		}
 		
 		//rghost
-		if(this.options.gmakeEmbeds) {
+		if(this.options.makeEmbeds) {
 		    str = str.replace(/(?:\[\:)([0-9]+)(?:\:\])/mg, 
 		'<a class="rgh-link" data-nextpic="http://rghost.ru/$1/image.png" href="http://rghost.ru/$1.view"><img src="http://rghost.ru/$1/thumb.png"></img></a>');
 		}
