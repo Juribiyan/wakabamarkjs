@@ -7,8 +7,9 @@ var WM = function() {
         makeLinks: true,
         bypass: true,
         greenquoting: true,
-        makeEmbeds: false,
-        makeLists: true
+        makeEmbeds: true,
+        makeLists: true,
+        reduceNewlines: true
     }
     
     this.clinks = {
@@ -97,8 +98,12 @@ var WM = function() {
 			}
 		}
 		
-		str = str.replace(/(\r\n|\n\r|\r|\n)+/mg,"<br />");
-
+		str = str.replace(/(\r\n|\n\r|\r|\n)/mg,"<br />");
+        
+        if(this.options.reduceNewlines) {
+            str = str.replace(/(<br \/>){2,}/mg,"<br /><br />");
+        }
+        
 		//apply formatting
 		for (i = this.tags.length - 1; i >= 0; i--) {
 			tag = this.tags[i];
