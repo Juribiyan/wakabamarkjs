@@ -1,0 +1,256 @@
+html,body {
+	margin:0;
+	padding:0;
+	font-family: Trebuchet MS, Helvetica, Arial, Verdana, sans-serif;
+	font-size: 90%;
+	background-color: #EEEEEE;
+}
+
+html {
+	overflow: hidden;
+}
+
+textarea {
+	font-family: monospace;
+	resize: none;
+}
+
+#pageHeader {
+	margin: 0;
+	padding: 0;
+	text-align: center;
+	margin-bottom: 0;
+	margin-top: 0.4em;
+	color: #000000;
+}
+
+#pageHeader h1 {
+	font-size: 3em;
+}
+
+#pageHeader * {
+	margin: 0;
+	padding: 0;
+	line-height: 1em;
+	font-weight: 100;
+}
+
+#pageHeader a {
+	color: #2255BB;
+	text-decoration: none;
+	position: relative;
+	z-index: 20;
+}
+
+#pageHeader h1 a:hover {
+	color: #000000;
+}
+
+#pageHeader h4 a:hover {
+	text-decoration: underline;
+}
+
+#leftContainer, #rightContainer {
+	margin: 0;
+	padding: 0;
+	position: relative;
+	width: 47.5%;
+	margin-top: -1.4em;
+}
+
+#leftContainer {
+	float: left;
+	left: 1.5%;
+}
+
+#rightContainer {
+	float: right;
+	right: 1.5%;
+}
+
+#rightContainer > * {
+	float: right;
+}
+
+.paneHeader {
+	margin: 0;
+	padding: 0;
+	position: relative;
+	width: 100%;
+	display: block;
+	height: 2em;
+}
+
+.paneHeader * {
+	position: relative;
+	font-weight: 900;
+}
+
+.paneHeader span {
+	background-color: #EEEEEE;
+	color: #000000;
+	padding: 0 0.75em;
+	font-size: 110%;
+}
+
+#paneSetting {
+	display: block;
+	margin-left: auto;
+	margin-right: 0.5em;
+	font-size: 110%;
+	font-weight: 900;
+	font-family: Arial, Verdana, sans-serif;
+	background-color: #FFFFFF;
+	color: #000000;
+	border: 1px solid #000000;
+}
+
+.pane {
+	margin: 0;
+	padding: 0;
+	padding-left: 4px; /* pane padding */
+	width: 100%;
+	border: none;
+	background-color: #FFFFFF;
+	display: block;
+	border: 1px solid #000000;
+	border-right: 1px solid #000000;
+	border-bottom: 1px solid #000000;
+
+	/* note: the panes get their height set with
+       javascript; see sizeTextAreas(). */
+
+	/* for now, set a height so things look nice
+	   if the user has javascript disabled */
+	height: 400px;
+}
+
+#previewPane {
+	background-color: #DDDDDD;
+}
+
+#outputPane {
+	background-color: #DDDDDD;
+	color: #fff;
+	display: none;
+}
+
+#syntaxPane {
+	background-color: #DDDDDD;
+	display: none;
+}
+
+div.pane {
+	overflow: auto;
+}
+
+#inputPane {
+	background-color: #FFFFFF;
+}
+
+#previewPane {
+	padding: 8px;
+	box-sizing: border-box;
+}
+
+#previewPane code {
+	font-size: 1.3em;
+}
+
+#footer {
+	margin: 0;
+	padding: 0;
+	position: relative;
+	float: left;
+	width: 100%;
+	height: 2.5em;
+	margin-top: 0.5em;
+	font-family: Helvetica, Arial, Verdana, sans-serif;
+	text-align: center;
+}
+
+#footer a {
+	text-decoration: none;
+	color: #000000;
+}
+
+#footer a:hover {
+	text-decoration: underline;
+}
+
+#byline {
+	padding-left: 2em;
+	color: #000000;
+}
+
+#convertTextControls {
+	position: absolute;
+	right: 5em;
+}
+
+#convertTextButton {
+	line-height: 1em;
+	background-color: #ccbfbf;
+	color: #000000;
+	border: none;
+}
+
+#convertTextButton:hover {
+	background-color: #FFFFFF;
+	color: black;
+}
+
+#convertTextSetting {
+	background-color: #FFFFFF;
+	color: #000000;
+	border: 1px solid #000000;
+}
+
+#processingTime {
+	margin: 0;
+	padding: 0;
+	width: 4em;
+	text-align: right;
+	color: #000000;
+	position: absolute;
+	right: 1em;
+	top: 0;
+}
+.spoiler {
+	color: black;
+	background-color: black;
+}
+.spoiler:hover {
+	color: white;
+}
+.unkfunc, blockquote:before {
+	color: #1AAE1A;
+}
+.inline {
+	display: inline;
+}
+blockquote {
+	font-family: serif;
+    background: #D9ECD9;
+margin: 5px;
+padding: 10px;
+	margin-left: 20px;
+}
+blockquote:before/*, blockquote:after*/ {
+	content: ">";
+	font-weight: bold;
+	font-size: 20px;
+  padding: 0 5px;
+  line-height: 10px;
+}
+/* blockquote:before {
+	content: "«";
+} */
+/* blockquote:after {
+	content: "»";
+} */
+.code {
+	border: 1px dashed rgba(0, 0, 0, 0.09);
+	background-color: #F1F1F1;
+	padding: 2px 4px;
+}

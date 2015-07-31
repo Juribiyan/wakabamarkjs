@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<!--<link rel="shortcut icon" href="https://c9.io/juribiyan/pm/workspace/public/images/favicon.ico">-->
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<script src="wakabamark.js"></script>
+<script src="ba-linkify.min.js"></script>
+<title>Wakabamark.js</title>
+<link rel="stylesheet" type="text/css" href="demo-assets/style.css" title="main">
+<link rel="stylesheet" type="text/css" href="demo-assets/photon.css" title="Photon">
+<script src="demo-assets/jquery.min.js"></script>
+</head>
+<body>
+    <div id="pageHeader">
+        <h1><a href="https://github.com/Juribiyan/wakabamarkjs">Wakabamark.js</a></h1>
+    </div>
+
+    <div id="leftContainer">
+        <div class="paneHeader">
+            <span>Input</span>
+        </div>
+        <textarea id="inputPane" class="pane"></textarea> 
+    </div>
+
+    <div id="rightContainer">
+        <div class="paneHeader">
+        </div>
+        <div id="previewPane" class="pane" style="display: block; height: 891px;"></div>
+    </div>
+
+    <div id="footer">
+        <span id="byline">by Snivy</span>
+    </div>
+<script>
+	var lastRoomLeft = 0;
+	$(window).ready(function() {
+		$(window).on('resize', setHeights);
+		$(window).resize();
+		$("textarea").on('input', function() {
+			$("#previewPane").html(wm.apply($(this).val()));
+		});
+	});
+	function setHeights() {
+		var windowHeight = $(window).height();
+		var footerHeight = $('#footer').height();
+		var textareaTop = $("textarea").offset().top;
+
+		// figure out how much room the panes should fill
+		var roomLeft = windowHeight - footerHeight - textareaTop;
+
+		if (roomLeft < 0) roomLeft = 0;
+
+		// if it hasn't changed, return
+		if (roomLeft == lastRoomLeft) {
+			return;
+		}
+		lastRoomLeft = roomLeft;
+
+		$('.pane').css({height: roomLeft+"px"});
+	}
+</script>
+</body></html>
