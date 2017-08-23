@@ -3,8 +3,8 @@ wakabamarkjs
 
 Настраиваемый парсер Wakabamark Для работы в клиенте.
 
-##Регистрация тегов
-###Открывающие и закрывающие теги
+## Регистрация тегов
+### Открывающие и закрывающие теги
     var wm = new WM();
     
     // Классический Вакабамарк
@@ -29,7 +29,7 @@ wakabamarkjs
     wm.registerTags(wm_tags);
     wm.registerTags(ku_tags);
 
-###Теги запрета разметки
+### Теги запрета разметки
 Внутри этих тегов разметка будет эскейпиться.
 
     var bypass_tags = [
@@ -39,7 +39,7 @@ wakabamarkjs
     
     wm.registerTags(bypass_tags, 'bypass');
     
-###Теги списков
+### Теги списков
 Новые строки, начинающиеся с указанного символа будут обернуты в список.
 
     var lists = [
@@ -49,7 +49,7 @@ wakabamarkjs
     
     wm.registerTags(lists, 'lists');
 
-##Опции
+## Опции
 
     wm.options = {
         makeLinks: true,            // Детектировать ссылки или нет
